@@ -1,0 +1,37 @@
+version: "3.9"
+
+services:
+  db:
+    image: postgres
+    volumes:
+      - ./data:/var/lib/postgresql/data
+    environment:
+      - LC_ALL=C.UTF-8
+      - TZ=Asia/Seoul
+      - POSTGRES_DB=openadr
+      - POSTGRES_USER=user
+      - POSTGRES_PASSWORD=1234
+    ports:
+      - "11100:5432"
+    restart: always
+
+  backend:
+    build:
+      context: .
+      dockerfile: Dockerfile-backend
+      args:
+        - GIT_ID=${GIT_ID}
+        - GIT_PASSWORD=${GIT_PASSWORD}
+        - GIT_USERNAME=${GIT_USERNAME}
+        - GIT_EMAIL=${GIT_EMAIL}
+    ports:
+      - "11200:8000"
+    environment:
+      TZ: Asia/Seoul
+      DB_NAME: openadr
+      DB_USER: user
+      DB_PASSWORD: 1234
+      DB_HOST: db
+      DB_PORT: 5432 # 외부 노출 포트 말고 내부 포트를 기입
+    depends_on:
+      - db
