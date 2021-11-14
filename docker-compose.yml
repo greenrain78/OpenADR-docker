@@ -35,3 +35,18 @@ services:
       DB_PORT: 5432 # 외부 노출 포트 말고 내부 포트를 기입
     depends_on:
       - db
+
+  manager:
+    build:
+      context: .
+      dockerfile: Dockerfile-manager
+      args:
+        - GIT_ID=${GIT_ID}
+        - GIT_PASSWORD=${GIT_PASSWORD}
+        - GIT_USERNAME=${GIT_USERNAME}
+        - GIT_EMAIL=${GIT_EMAIL}
+    volumes:
+      - /var/run/docker.sock:/var/run/docker.sock
+    environment:
+      TZ: Asia/Seoul
+
