@@ -5,4 +5,7 @@
 # DB 폴더 제외
 data
 
+# ssh 키
+greenrain_github
+
 !.keep

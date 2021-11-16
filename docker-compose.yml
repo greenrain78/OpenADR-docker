@@ -49,4 +49,6 @@ services:
       - /var/run/docker.sock:/var/run/docker.sock
     environment:
       TZ: Asia/Seoul
+      DB_NICKNAME: server_on_docker
+
 
