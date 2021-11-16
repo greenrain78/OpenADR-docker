@@ -31,6 +31,8 @@ RUN git config --global user.email "$GIT_EMAIL"
 WORKDIR /home/OpenADR-manager
 RUN git fetch --all
 RUN git pull origin main
+RUN git submodule init
+RUN git submodule update
 RUN python -m pip install -r /home/OpenADR-manager/requirements.txt
 
 # pass id and password
