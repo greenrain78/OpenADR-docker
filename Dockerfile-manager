@@ -7,12 +7,6 @@ ARG GIT_PASSWORD
 ARG GIT_USERNAME
 ARG GIT_EMAIL
 
-RUN mkdir /root/.ssh/
-ADD greenrain_github /root/.ssh/id_rsa
-RUN chmod 600 /root/.ssh/id_rsa
-RUN touch /root/.ssh/known_hosts
-RUN ssh-keyscan github.com >> /root/.ssh/known_hosts
-
 # install ssh
 RUN apt-get update && apt-get upgrade -y
 RUN apt-get install -y openssh-server
@@ -28,17 +22,13 @@ RUN add-apt-repository "deb [arch=amd64] https://download.docker.com/linux/debia
 
 
 # install src
-
 WORKDIR /home
 RUN git clone http://$GIT_ID:$GIT_PASSWORD@github.com/greenrain78/OpenADR-manager.git
 RUN git config --global user.name "$GIT_USERNAME"
 RUN git config --global user.email "$GIT_EMAIL"
 
 WORKDIR /home/OpenADR-manager
-RUN git fetch --all
-RUN git pull origin main
-RUN git submodule init
-RUN git submodule update
+RUN python -m pip install --upgrade pip
 RUN python -m pip install -r /home/OpenADR-manager/requirements.txt
 
 # pass id and password
